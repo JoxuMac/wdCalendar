@@ -4,11 +4,11 @@ include_once("php/functions.php");
 function getCalendarByRange($id){
   try{
     $db = new DBConnection();
-    $db->getConnection();
+    $mysqli = $db->getConnection();
     $sql = "select * from `jqcalendar` where `id` = " . $id;
-    $handle = mysql_query($sql);
+    $handle = $mysqli->query($sql);
     //echo $sql;
-    $row = mysql_fetch_object($handle);
+    $row = $handle->fetch_object();
 	}catch(Exception $e){
   }
   return $row;

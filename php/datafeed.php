@@ -8,14 +8,14 @@ function addCalendar($st, $et, $sub, $ade){
     $db = new DBConnection();
     $db->getConnection();
     $sql = "insert into `jqcalendar` (`subject`, `starttime`, `endtime`, `isalldayevent`) values ('"
-      .mysql_real_escape_string($sub)."', '"
+      .$mysqli->real_escape_string($sub)."', '"
       .php2MySqlTime(js2PhpTime($st))."', '"
       .php2MySqlTime(js2PhpTime($et))."', '"
-      .mysql_real_escape_string($ade)."' )";
+      .$mysqli->real_escape_string($ade)."' )";
     //echo($sql);
-		if(mysql_query($sql)==false){
+		if($mysqli->query($sql)==false){
       $ret['IsSuccess'] = false;
-      $ret['Msg'] = mysql_error();
+      $ret['Msg'] = $mysqli->error();
     }else{
       $ret['IsSuccess'] = true;
       $ret['Msg'] = 'add success';
@@ -35,17 +35,17 @@ function addDetailedCalendar($st, $et, $sub, $ade, $dscr, $loc, $color, $tz){
     $db = new DBConnection();
     $db->getConnection();
     $sql = "insert into `jqcalendar` (`subject`, `starttime`, `endtime`, `isalldayevent`, `description`, `location`, `color`) values ('"
-      .mysql_real_escape_string($sub)."', '"
+      .$mysqli->real_escape_string($sub)."', '"
       .php2MySqlTime(js2PhpTime($st))."', '"
       .php2MySqlTime(js2PhpTime($et))."', '"
-      .mysql_real_escape_string($ade)."', '"
-      .mysql_real_escape_string($dscr)."', '"
-      .mysql_real_escape_string($loc)."', '"
-      .mysql_real_escape_string($color)."' )";
+      .$mysqli->real_escape_string($ade)."', '"
+      .$mysqli->real_escape_string($dscr)."', '"
+      .$mysqli->real_escape_string($loc)."', '"
+      .$mysqli->real_escape_string($color)."' )";
     //echo($sql);
-		if(mysql_query($sql)==false){
+		if($mysqli->query($sql)==false){
       $ret['IsSuccess'] = false;
-      $ret['Msg'] = mysql_error();
+      $ret['Msg'] = $mysqli->error();
     }else{
       $ret['IsSuccess'] = true;
       $ret['Msg'] = 'add success';
@@ -67,12 +67,12 @@ function listCalendarByRange($sd, $ed){
   $ret['error'] = null;
   try{
     $db = new DBConnection();
-    $db->getConnection();
+    $mysqli = $db->getConnection();
     $sql = "select * from `jqcalendar` where `starttime` between '"
       .php2MySqlTime($sd)."' and '". php2MySqlTime($ed)."' ORDER BY starttime ASC";
-    $handle = mysql_query($sql);
+    $handle = $mysqli->query($sql);
     //echo $sql;
-    while ($row = mysql_fetch_object($handle)) {
+    while ($row = $handle->fetch_object()) {
       //$ret['events'][] = $row;
       //$attends = $row->AttendeeNames;
       //if($row->OtherAttendee){
@@ -134,9 +134,9 @@ function updateCalendar($id, $st, $et){
       . " `endtime`='" . php2MySqlTime(js2PhpTime($et)) . "' "
       . "where `id`=" . $id;
     //echo $sql;
-		if(mysql_query($sql)==false){
+		if($mysqli->query($sql)==false){
       $ret['IsSuccess'] = false;
-      $ret['Msg'] = mysql_error();
+      $ret['Msg'] = $mysqli->error();
     }else{
       $ret['IsSuccess'] = true;
       $ret['Msg'] = 'Succefully';
@@ -156,16 +156,16 @@ function updateDetailedCalendar($id, $st, $et, $sub, $ade, $dscr, $loc, $color, 
     $sql = "update `jqcalendar` set"
       . " `starttime`='" . php2MySqlTime(js2PhpTime($st)) . "', "
       . " `endtime`='" . php2MySqlTime(js2PhpTime($et)) . "', "
-      . " `subject`='" . mysql_real_escape_string($sub) . "', "
-      . " `isalldayevent`='" . mysql_real_escape_string($ade) . "', "
-      . " `description`='" . mysql_real_escape_string($dscr) . "', "
-      . " `location`='" . mysql_real_escape_string($loc) . "', "
-      . " `color`='" . mysql_real_escape_string($color) . "' "
+      . " `subject`='" . $mysqli->real_escape_string($sub) . "', "
+      . " `isalldayevent`='" . $mysqli->real_escape_string($ade) . "', "
+      . " `description`='" . $mysqli->real_escape_string($dscr) . "', "
+      . " `location`='" . $mysqli->real_escape_string($loc) . "', "
+      . " `color`='" . $mysqli->real_escape_string($color) . "' "
       . "where `id`=" . $id;
     //echo $sql;
-		if(mysql_query($sql)==false){
+		if($mysqli->query($sql)==false){
       $ret['IsSuccess'] = false;
-      $ret['Msg'] = mysql_error();
+      $ret['Msg'] = $mysqli->error();
     }else{
       $ret['IsSuccess'] = true;
       $ret['Msg'] = 'Succefully';
@@ -183,9 +183,9 @@ function removeCalendar($id){
     $db = new DBConnection();
     $db->getConnection();
     $sql = "delete from `jqcalendar` where `id`=" . $id;
-		if(mysql_query($sql)==false){
+		if($mysqli->query($sql)==false){
       $ret['IsSuccess'] = false;
-      $ret['Msg'] = mysql_error();
+      $ret['Msg'] = $mysqli->error();
     }else{
       $ret['IsSuccess'] = true;
       $ret['Msg'] = 'Succefully';
